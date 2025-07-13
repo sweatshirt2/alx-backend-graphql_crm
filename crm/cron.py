@@ -71,3 +71,4 @@ def update_low_stock():
             log_file.write(f"{timestamp} - ERROR: {str(e)}\n")
 
 # updatelowstock and logs to /tmp/lowstockupdates_log.txt
+# Checks for a mutation that Queries products with stock < 10
