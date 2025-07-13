@@ -69,3 +69,5 @@ def update_low_stock():
     except Exception as e:
         with open(log_path, "a") as log_file:
             log_file.write(f"{timestamp} - ERROR: {str(e)}\n")
+
+# updatelowstock and logs to /tmp/lowstockupdates_log.txt
