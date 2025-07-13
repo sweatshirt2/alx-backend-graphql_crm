@@ -25,3 +25,5 @@ def log_crm_heartbeat():
 
     with open("/tmp/crm_heartbeat_log.txt", "a") as log_file:
         log_file.write(log_message)
+
+# ["from gql.transport.requests import RequestsHTTPTransport", "from gql import", "gql", "Client"]
