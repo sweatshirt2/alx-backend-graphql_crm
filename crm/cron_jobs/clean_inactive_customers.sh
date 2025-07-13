@@ -21,3 +21,4 @@ print(count)
 
 # Append log with timestamp and count
 echo \"$TIMESTAMP - Deleted $DELETED_COUNT inactive customers\" >> \"$LOG_FILE\"
+# "${BASH_SOURCE[0]}", "pwd", "cwd", "cd", "if", "else"
