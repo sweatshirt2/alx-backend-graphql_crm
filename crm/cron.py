@@ -27,3 +27,45 @@ def log_crm_heartbeat():
         log_file.write(log_message)
 
 # ["from gql.transport.requests import RequestsHTTPTransport", "from gql import", "gql", "Client"]
+import datetime
+import requests
+
+def update_low_stock():
+    timestamp = datetime.datetime.now().strftime("%d/%m/%Y-%H:%M:%S")
+    log_path = "/tmp/low_stock_updates_log.txt"
+
+    query = """
+    mutation {
+        updateLowStockProducts {
+            updatedProducts {
+                name
+                stock
+            }
+            message
+        }
+    }
+    """
+
+    try:
+        response = requests.post(
+            "http://localhost:8000/graphql",
+            json={"query": query},
+            timeout=10
+        )
+        data = response.json()
+
+        if response.ok and "data" in data:
+            updates = data["data"]["updateLowStockProducts"]["updatedProducts"]
+            message = data["data"]["updateLowStockProducts"]["message"]
+
+            with open(log_path, "a") as log_file:
+                log_file.write(f"{timestamp} - {message}\n")
+                for product in updates:
+                    log_file.write(f"    - {product['name']} now has stock: {product['stock']}\n")
+        else:
+            with open(log_path, "a") as log_file:
+                log_file.write(f"{timestamp} - Failed to update low stock: {data}\n")
+
+    except Exception as e:
+        with open(log_path, "a") as log_file:
+            log_file.write(f"{timestamp} - ERROR: {str(e)}\n")
